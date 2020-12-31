@@ -1,0 +1,22 @@
+{
+  "name": "deal-img",
+  "version": "1.0.0",
+  "description": "一个处理图片的项目",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon -x npm run serve",
+    "serve": "node index"
+  },
+  "keywords": [
+    "image"
+  ],
+  "author": "cll",
+  "license": "ISC",
+  "dependencies": {
+    "connect-history-api-fallback": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "log4js": "^6.3.0",
+    "multer": "^1.4.2"
+  }
+}
