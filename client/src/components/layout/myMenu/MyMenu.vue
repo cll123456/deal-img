@@ -4,11 +4,10 @@
       router
       class="el-menu-demo"
       mode="horizontal"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b">
+      background-color="#e9ecf6"
+      active-text-color="#2b42a9">
     <el-menu-item index="/home">图片加水印</el-menu-item>
-    <el-menu-item index="/expressImg">图片压缩</el-menu-item>
+    <el-menu-item index="/pressImg">图片压缩</el-menu-item>
     <el-submenu index="">
       <template #title>生成二维码</template>
       <el-menu-item index="qrcode">普通二维码</el-menu-item>
@@ -19,16 +18,18 @@
 </template>
 
 <script>
+
+
 export default {
-  name: "menu",
+  name: "MyMenu",
   setup() {
     return {
-      activeIndex: '/home'
+      activeIndex: '/' + window.location.href.split('/').pop(),
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

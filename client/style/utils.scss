@@ -1,0 +1,33 @@
+/**
+除去网站头部的样式
+$hpx 头部的高度
+$wid: 宽度
+$bgc： 背景颜色
+ */
+@mixin exclude-header-style($hpx: 60px, $wid: 100%, $bgc:#f9f6f680) {
+  background-color:  $bgc;
+  background-image: linear-gradient(to bottom, $bgc, #fff);
+  width: $wid;
+  height: calc(100vh - #{$hpx});
+}
+
+/**
+图片上传的样式
+$pd: 四周的边距
+$ht: 高度
+ */
+@mixin img-upd-style($pad:50px 0, $ht: 150px) {
+  padding: $pad;
+  height: $ht;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/**
+图片标题的大小
+ */
+@mixin img-title-style($fs: 22px){
+  font-size: $fs;
+}

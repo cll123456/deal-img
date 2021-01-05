@@ -30,6 +30,10 @@ export default function () {
         silent: false,
         // 那个包不需要打包
         optimizeDeps: [],
-
+        cssPreprocessOptions: {
+            scss: {
+                additionalData: '@import "style/var.scss";', // 添加公共样式
+            },
+        }
     }
 }
