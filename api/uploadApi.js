@@ -1,18 +1,20 @@
 const multer = require('multer');
 const path = require('path');
-const {exitsFolder } = require("../util/fileUtil");
+const {exitsFolder} = require("../util/fileUtil");
 const express = require('express');
 const {successMsg} = require("../util/apiUtils");
 const router = express.Router();
-
+const fileStorage = './../public/upload/origin/'
 // 文件的存储位置
 const storage = multer.diskStorage({
     // 存储位置
-    destination: function (req, file, cb) {
-        const upOriPath = './../public/upload/origin';
-        if (exitsFolder(upOriPath)) {
-            cb(null, upOriPath)
+    destination: async function (req, file, cb) {
+        try {
+            await exitsFolder(fileStorage);
+        } catch (e) {
+            throw Error(e.msg);
         }
+        cb(null, path.resolve(__dirname, fileStorage));
     },
     // 文件命名
     filename: function (req, file, cb) {
@@ -25,7 +27,7 @@ const storage = multer.diskStorage({
 })
 // 过滤文件
 const fileFilter = (req, file, cb) => {
-    const files = ['jpg', 'jpeg', 'png', 'gif'];
+    const files = ['.jpg', '.jpeg', '.png', '.gif'];
     const extName = path.extname(file.originalname);
     if (files.includes(extName)) {
         cb(null, true)
@@ -37,17 +39,19 @@ const fileFilter = (req, file, cb) => {
 }
 
 const upload = multer({
-    storage, fileFilter, limits: {
+    storage,
+    fileFilter,
+    limits: {
         fileSize: 10 * 1024 * 1024 // 限制图片大小在10MB
     }
-})
+});
 
 // 上传文件的路由
-router.post('/:fileName',
-    upload,
+router.post('/',
+    upload.single('img'),
     (req, res) => {
         const obj = successMsg('上传成功', {
-            url: 'upload/' + req.file.filename,
+            url: path.resolve(__dirname, fileStorage, req.file.filename),
         })
         res.status(200).send(obj);
     })

@@ -8,7 +8,7 @@
         </el-button>
         <file-upload
             :file-id="`pressImg`"
-            @handFile="fileUpload"
+            @handFile="pressFileUpload"
             :file-type="`image/jpeg,image/jpg,image/png,image/svg`"
             :is-multiple="false"/>
       </p>
@@ -20,6 +20,7 @@
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
+import {uploadFile} from "../../api/fileApi.js";
 
 export default {
   name: "index",
@@ -35,13 +36,17 @@ export default {
       hasChooseFileLoadingRef.value = true;
     }
     // 文件上传的业务逻辑
-    const fileUpload = (files) => {
-      console.log(files, '----')
+    const fileUpload = async (files) => {
+      const formData = new FormData();
+      formData.append('img', files[0]);
+      const fileRe = await uploadFile(formData);
+      console.log(fileRe, '------')
+      hasChooseFileLoadingRef.value = false;
     }
 
     return {
       sureUpload,
-      fileUpload,
+      pressFileUpload: fileUpload,
       hasChooseFileLoading: hasChooseFileLoadingRef,
     }
   }

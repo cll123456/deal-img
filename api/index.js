@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+
 // 创建一个服务
 const app = express();
 
@@ -11,7 +13,7 @@ app.use(history({
 }));
 
 // 使用静态资源的中间件
-app.use(express.static(path.resolve(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, './public/html')));
 
 // 使用cors 跨域中间件
 const cors = require('cors');
@@ -34,7 +36,8 @@ app.use(express.json())
 app.use(require('./../middleware/apiLoggerMiddleware'));
 
 // 使用上传文件的中间件
-app.use(require('./uploadApi'))
+app.use('/api/upload',require('./uploadApi'))
+app.use('/api/pressImg',require('./pressImgApi'))
 
 // 使用错误中间件
 app.use(require('./../middleware/errorMiddleware'));

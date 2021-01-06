@@ -1,0 +1,34 @@
+import axios from "axios";
+// 从本地缓存中获取token
+
+export default function (headers = {}) {
+    let instance = axios;
+    // 存在特殊的请求头
+    if (Object.keys(headers).length > 0) {
+        instance = axios.create({
+            timeout: '3000 * 1000',
+            headers: {
+                ...headers,
+            }
+        })
+    }
+    // 请求拦截
+    instance.interceptors.request.use(function (config) {
+        // Do something before request is sent
+        return config;
+    }, function (error) {
+        // Do something with request error
+        return Promise.reject(error);
+    });
+
+    // 响应拦截
+    instance.interceptors.response.use(function (response) {
+        return response.data;
+    }, function (error) {
+
+        return Promise.reject(error);
+    });
+
+    return instance;
+}
+
