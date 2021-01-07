@@ -16,13 +16,6 @@ exports.exitsFolder = async function (reaPath) {
         // 不存在文件夹，直接创建
         await fs.promises.mkdir(absPath, {recursive: true})
     }
-    // fs.stat(absPath, function (err, stats) {
-    //     if (!stats) {
-    //         fs.mkdir(absPath, {recursive: true}, err => {
-    //             if (err) throw err;
-    //         }); //Create dir in case not found
-    //     }
-    // });
 
 }
 
@@ -32,7 +25,6 @@ exports.exitsFolder = async function (reaPath) {
  * @returns {Promise<*>}
  */
 exports.exitsFile = async (realPath) => {
-    const absPath = path.resolve(__dirname, realPath);
-    const stats = await fs.promises.stat(absPath);
+    const stats = await fs.promises.stat(realPath);
     return !!stats.isFile();
 }

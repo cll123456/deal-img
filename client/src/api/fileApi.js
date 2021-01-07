@@ -16,5 +16,5 @@ export async function uploadFile(data) {
  * @returns {Promise<AxiosResponse<any>>}
  */
 export async function pressImg(filePath) {
-    return await request().get('/api/pressImg/' + filePath)
+    return await request().get('/api/pressImg?fileName=' + filePath)
 }

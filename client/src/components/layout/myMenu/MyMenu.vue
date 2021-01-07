@@ -13,7 +13,6 @@
       <el-menu-item index="qrcode">普通二维码</el-menu-item>
       <el-menu-item index="logoQrCode">带logo二维码</el-menu-item>
     </el-submenu>
-    <el-menu-item><a href="https://www.ele.me" target="_blank">更多</a></el-menu-item>
   </el-menu>
 </template>
 
@@ -23,8 +22,9 @@
 export default {
   name: "MyMenu",
   setup() {
+    const curRout = '/' + window.location.href.split('/').pop();
     return {
-      activeIndex: '/' + window.location.href.split('/').pop(),
+      activeIndex: curRout === '/' ? '/home' : curRout,
     }
   }
 }
