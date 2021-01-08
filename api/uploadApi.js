@@ -2,6 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const {exitsFolder} = require("../util/fileUtil");
 const express = require('express');
+const {timerClearFile} = require("../util/timerUtils");
 const {successMsg} = require("../util/apiUtils");
 const router = express.Router();
 const fileStorage = './../public/upload/origin/'
@@ -50,10 +51,13 @@ const upload = multer({
 router.post('/',
     upload.single('img'),
     (req, res) => {
+        const filePath = path.resolve(__dirname, fileStorage, req.file.filename)
         const obj = successMsg('上传成功', {
-            url: path.resolve(__dirname, fileStorage, req.file.filename),
+            url: filePath,
         })
         res.status(200).send(obj);
+        // 删除文件
+        timerClearFile(filePath, 30 * 60)
     })
 
 module.exports = router;

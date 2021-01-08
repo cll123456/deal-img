@@ -47,6 +47,7 @@ app.use(require('./../middleware/apiLoggerMiddleware'));
 // 使用上传文件的中间件
 app.use('/api/upload', require('./uploadApi'))
 app.use('/api/pressImg', require('./pressImgApi'))
+app.use('/api/download', require('./downloadApi'))
 
 // 使用错误中间件
 app.use(require('./../middleware/errorMiddleware'));

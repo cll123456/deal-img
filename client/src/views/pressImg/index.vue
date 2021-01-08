@@ -14,27 +14,31 @@
       </p>
     </div>
     <!--   上传压缩的图片列表-->
-    <section class="dlg-pressImg--list">
-      <el-row>
+    <section class="dlg-pressImg--list" v-if="imgList.length > 0">
+      <el-row v-for="img in imgList">
         <el-col :span="8">
-          <div class="img-title">微信图片.jpg</div>
-          <div class="img-size">22.0MB</div>
+          <div class="img-title" :title="img.fileName">{{ img.fileName }}</div>
+          <div class="img-size">{{ img.fileOriSize }}</div>
         </el-col>
         <el-col :span="8">
           <my-process
               :brd-rs="10"
               :pcs-height="20"
-              process-dept="100"
-              bg-color="#409eff"
-              :show-striped="true"
-              :show-act="true"/>
+              :show-txt="img.hasTxt"
+              :txt="img.processTxt"
+              :process-dept="img.process"
+              :bg-color="img.bgColor"
+              :show-striped="img.hasStriped"
+              :show-act="img.hasActive"/>
         </el-col>
         <el-col :span="8">
-          <div class="img-size">22KB</div>
+          <div class="img-size"> {{ img.pressFileSize }}</div>
           <div class="img-download">
-            <el-link type="info">下载压缩图</el-link>
+            <el-link type="info" :href="`/api/download?filePath=${img.url}&fileName=${img.fileName}`" >
+              {{ img.hasShowDownload ? '下载压缩图' : '' }}
+            </el-link>
           </div>
-          <div class="img-reduce--size">-80%</div>
+          <div class="img-reduce--size"> {{ img.reduce }}</div>
         </el-col>
       </el-row>
     </section>
@@ -45,8 +49,8 @@
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
-import {pressImg, uploadFile} from "../../api/fileApi.js";
 import MyProcess from "../../components/busCom/myProcess/myProcess.vue";
+import {imgPress} from "../composition/imgPress.js";
 
 export default {
   name: "index",
@@ -55,7 +59,8 @@ export default {
     const router = useRouter();
     // 是否加载文件上传
     const hasChooseFileLoadingRef = ref(false);
-
+    // 导出文件图片上传列表，里面维护一个一个的图片对象
+    const imgListRef = ref([]);
     // 点击选择文件
     const sureUpload = (id) => {
       document.querySelector(`#${id}`).click();
@@ -63,19 +68,14 @@ export default {
     }
     // 文件上传的业务逻辑
     const fileUpload = async (files) => {
-      const formData = new FormData();
-      formData.append('img', files.files[0]);
-      const fileRe = await uploadFile(formData);
-      const updUrl = fileRe.data.url;
-      const pressRe = await pressImg(updUrl);
-      console.log(pressRe)
-      hasChooseFileLoadingRef.value = false;
+      await imgPress(files, hasChooseFileLoadingRef, imgListRef);
     }
 
     return {
       sureUpload,
       pressFileUpload: fileUpload,
       hasChooseFileLoading: hasChooseFileLoadingRef,
+      imgList: imgListRef,
     }
   }
 }
@@ -83,6 +83,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "style/utils.scss";
+@import "style/common.scss";
 
 .dlg-pressImg {
   @include exclude-header-style;
@@ -123,6 +124,10 @@ export default {
         display: flex;
         justify-content: space-between;
 
+        .img-title{
+          max-width: 200px;
+          @include one-dot();
+        }
         .img-size {
           font-weight: normal;
           color: #67C23A;

@@ -2,7 +2,9 @@ import axios from "axios";
 // 从本地缓存中获取token
 
 export default function (headers = {}) {
-    let instance = axios;
+    let instance = axios.create({
+        timeout: '3000 * 1000',
+    });
     // 存在特殊的请求头
     if (Object.keys(headers).length > 0) {
         instance = axios.create({
@@ -23,7 +25,7 @@ export default function (headers = {}) {
 
     // 响应拦截
     instance.interceptors.response.use(function (response) {
-        return response.data;
+        return Promise.resolve(response.data) ;
     }, function (error) {
 
         return Promise.reject(error);

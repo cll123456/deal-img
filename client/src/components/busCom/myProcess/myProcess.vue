@@ -15,7 +15,7 @@
            backgroundColor: bgColor,
            color: txtColor
          }">
-      <span :class="{showTxt: 'hidden-txt'}">{{ txt }}</span>
+      <span :class="{'hidden-txt': !showTxt }">{{ txt }}</span>
     </div>
   </div>
 </template>

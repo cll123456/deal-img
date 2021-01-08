@@ -25,6 +25,10 @@ log4js.configure({
         api: {
             appenders: ['api'],
             level: 'all'
+        },
+        other: {
+            appenders: ['other'],
+            level: 'all'
         }
     },
     // 出口
@@ -32,7 +36,8 @@ log4js.configure({
         default: {
             type: "stdout" // 控制台输出
         },
-        api: appenderOptions('api')
+        api: appenderOptions('api'),
+        other: appenderOptions('other')
     }
 })
 // 这一行很重要，当服务退出的时候，需要把日志给记录完（记录日志是一个异步的过程）
@@ -42,5 +47,6 @@ process.on("exit", () => {
 
 // 导出日志记录
 exports.apiLogger = log4js.getLogger("api");
+exports.otherLogger = log4js.getLogger("other");
 exports.defaultLogger = log4js.getLogger();
 
