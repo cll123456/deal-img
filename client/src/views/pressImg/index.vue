@@ -64,10 +64,10 @@ export default {
     // 点击选择文件
     const sureUpload = (id) => {
       document.querySelector(`#${id}`).click();
-      hasChooseFileLoadingRef.value = true;
     }
     // 文件上传的业务逻辑
     const fileUpload = async (files) => {
+      hasChooseFileLoadingRef.value = true;
       await imgPress(files, hasChooseFileLoadingRef, imgListRef);
     }
 
