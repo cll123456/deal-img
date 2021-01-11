@@ -9,7 +9,7 @@ export default function (headers = {}) {
     // 存在特殊的请求头
     if (Object.keys(headers).length > 0) {
         instance = axios.create({
-            timeout: '30 * 1000',
+            timeout: '300 * 1000',
             headers: {
                 ...headers,
             }

@@ -20,11 +20,11 @@ export const routes = [
     }, {
         name: 'qrCode',
         path: '/qrCode',
-        component: getAsyncComponent('../src/views/qrCode.vue')
+        component: getAsyncComponent('../src/views/qrCode/qrCode.vue')
     },
     {
         name: 'logoQrCode',
         path: '/logoQrCode',
-        component: getAsyncComponent('../src/views/logoQrCode.vue')
+        component: getAsyncComponent('../src/views/qrCode/logoQrCode.vue')
     }
 ]
