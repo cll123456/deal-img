@@ -13,6 +13,11 @@
             :is-multiple="false"/>
       </p>
     </div>
+    <div class="dlg-pressImg--remark">
+      <p>备注1：请上传jpg,jpeg,或者png的图片，图片大小在100MB</p>
+      <p>备注2：压缩完后请尽快下载，30min后图片自动删除.&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</p>
+    </div>
+
     <!--   上传压缩的图片列表-->
     <section class="dlg-pressImg--list" v-if="imgList.length > 0">
       <el-row v-for="img in imgList">
@@ -34,7 +39,7 @@
         <el-col :span="8">
           <div class="img-size"> {{ img.pressFileSize }}</div>
           <div class="img-download">
-            <el-link type="info" :href="`/api/download?filePath=${img.url}&fileName=${img.fileName}`" >
+            <el-link type="info" :href="`/api/download?filePath=${img.url}&fileName=${img.fileName}`">
               {{ img.hasShowDownload ? '下载压缩图' : '' }}
             </el-link>
           </div>
@@ -51,6 +56,8 @@ import {useRouter} from 'vue-router';
 import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
 import MyProcess from "../../components/busCom/myProcess/myProcess.vue";
 import {imgPress} from "../composition/imgPress.js";
+import {imgStandard} from "../../../util/fileUtils.js";
+
 
 export default {
   name: "index",
@@ -67,8 +74,13 @@ export default {
     }
     // 文件上传的业务逻辑
     const fileUpload = async (files) => {
+      if (!imgStandard(files)) return;
       hasChooseFileLoadingRef.value = true;
-      await imgPress(files, hasChooseFileLoadingRef, imgListRef);
+      try {
+        await imgPress(files, hasChooseFileLoadingRef, imgListRef);
+      } catch (e) {
+        hasChooseFileLoadingRef.value = false;
+      }
     }
 
     return {
@@ -94,6 +106,16 @@ export default {
 
     h1 {
       @include img-title-style;
+    }
+  }
+
+  &--remark {
+    font-size: 12px;
+    text-align: center;
+
+    p {
+      margin: 5px auto;
+      color: #f40;
     }
   }
 
@@ -124,10 +146,11 @@ export default {
         display: flex;
         justify-content: space-between;
 
-        .img-title{
+        .img-title {
           max-width: 200px;
           @include one-dot();
         }
+
         .img-size {
           font-weight: normal;
           color: #67C23A;

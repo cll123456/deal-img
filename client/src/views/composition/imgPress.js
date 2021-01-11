@@ -26,10 +26,9 @@ export async function imgPress(files, hasChooseFileLoadingRef, imgListRef) {
         reduce: '', // 文件压缩后的大小
         hasShowDownload: false, // 是否显示下载按钮
     }
-    imgListRef.value.push(obj)
     // 上传文件
     const fileRe = await uploadFile(formData);
-    console.log(fileRe)
+    imgListRef.value.push(obj)
     const updUrl = fileRe.data.url;
     // 压缩文件,获取文件路径，文件大小
     const pressRe = await pressImg(updUrl);

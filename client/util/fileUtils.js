@@ -1,3 +1,5 @@
+import {ElMessage} from "element-plus";
+
 /**
  * 转换文件的大小
  * @param limit b
@@ -22,4 +24,33 @@ export function transformFileSize(limit) {
         return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
     }
     return size
+}
+
+/**
+ * 图片的标准，工具类
+ * @param files 图片对象
+ * @returns {boolean}
+ */
+export function imgStandard(files){
+    if (!files.files[0]) return false;
+    let types = ['jpg','jpeg', 'png'];
+    let fileType = files.files[0].type.split('/')[1]
+    // 判断图片的类型
+    if (!types.includes(fileType)) {
+        ElMessage.warning({
+            message: '请上传图片后缀名为jpg,jpeg或者是png的图片！',
+            type: 'warning'
+        });
+        return false;
+    }
+    // 图片大小在100MB以内
+    if (files.files[0].size / 1024 / 1024 > 100){
+        ElMessage.warning({
+            message: '图片大小在100MB以内！',
+            type: 'warning'
+        });
+        return false;
+    }
+
+    return true;
 }

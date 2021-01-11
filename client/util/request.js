@@ -1,14 +1,15 @@
 import axios from "axios";
+import {ElMessage} from "element-plus";
 // 从本地缓存中获取token
 
 export default function (headers = {}) {
     let instance = axios.create({
-        timeout: '3000 * 1000',
+        timeout: '30 * 1000',
     });
     // 存在特殊的请求头
     if (Object.keys(headers).length > 0) {
         instance = axios.create({
-            timeout: '3000 * 1000',
+            timeout: '30 * 1000',
             headers: {
                 ...headers,
             }
@@ -27,7 +28,10 @@ export default function (headers = {}) {
     instance.interceptors.response.use(function (response) {
         return Promise.resolve(response.data) ;
     }, function (error) {
-
+        ElMessage.error({
+            message: '服务端错误，请联系管理员！',
+            type: 'error'
+        });
         return Promise.reject(error);
     });
 
