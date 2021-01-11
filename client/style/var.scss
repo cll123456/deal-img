@@ -8,5 +8,11 @@
 $dlg-main--color: #2940a8;
 $dlg-subLine--color: #e6e6e6;
 
-$dlg-header--bgColor: rgba($dlg-main--color, .1)
+$dlg-header--bgColor: rgba($dlg-main--color, .1);
 
+
+/**
+------------------项目的长宽高-------------------
+**/
+// 项目的主要宽度
+$dlg-max-width: 1000px

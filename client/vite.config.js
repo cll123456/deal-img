@@ -20,7 +20,8 @@ export default function () {
         ssr: false,
         // 重命名路径  path.resolve(__dirname, './src')
         alias: {
-            '/@/': path.resolve(__dirname, './src')
+            '/@/': path.resolve(__dirname, './src'),
+            'vue': 'vue/dist/vue.esm-bundler.js' // 定义vue的别名，如果使用其他的插件，可能会用到别名
         },
         // 端口
         port: 3002,

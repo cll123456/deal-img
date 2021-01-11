@@ -1,0 +1,7 @@
+// 关于页面的scss文件
+@import './var.scss';
+
+.dlg-width{
+  width: $dlg-max-width;
+  margin: 0 auto;
+}
