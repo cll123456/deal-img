@@ -29,8 +29,13 @@ export default function () {
         open: false,
         // 开启控制台输出日志
         silent: false,
-        // 那个包不需要打包
-        optimizeDeps: [],
+        // 这样 vite 在执行 runOptimize 的时候中会使用 roolup 对 包含的 包重新编译，
+        //将编译成符合 esm 模块规范的新的包放入 node_modules 下的 .vite_opt_cache 中，
+        //然后配合 resolver 对 包含的包 的导入进行处理：使用编译后的包内容代替原来 lodash 的包的内容，
+        //这样就解决了 vite 中不能使用 cjs 包的问题，这部分代码在  depOptimizer.ts 里。
+        optimizeDeps: {
+            include: ["axios","element-plus","vue","vue-router"]
+        },
         cssPreprocessOptions: {
             scss: {
                 additionalData: '@import "style/var.scss";', // 添加公共样式

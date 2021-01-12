@@ -5,3 +5,9 @@
   width: $dlg-max-width;
   margin: 0 auto;
 }
+
+.dlg-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
