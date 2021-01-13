@@ -31,9 +31,9 @@ export function transformFileSize(limit) {
  * @param files 图片对象
  * @returns {boolean}
  */
-export function imgStandard(files){
+export function imgStandard(files) {
     if (!files.files[0]) return false;
-    let types = ['jpg','jpeg', 'png'];
+    let types = ['jpg', 'jpeg', 'png'];
     let fileType = files.files[0].type.split('/')[1]
     // 判断图片的类型
     if (!types.includes(fileType)) {
@@ -44,7 +44,7 @@ export function imgStandard(files){
         return false;
     }
     // 图片大小在100MB以内
-    if (files.files[0].size / 1024 / 1024 > 100){
+    if (files.files[0].size / 1024 / 1024 > 100) {
         ElMessage.warning({
             message: '图片大小在100MB以内！',
             type: 'warning'
@@ -53,4 +53,19 @@ export function imgStandard(files){
     }
 
     return true;
+}
+
+/**
+ * 通过a链接来下载图片
+ * @param src {String} 地址
+ * @param imgName {String} 图片名称
+ */
+export function downloadImgByLinkA(src, imgName = 'qrcode') {
+    let a = document.createElement('a');
+    a.download = `${imgName}.png`;
+    a.style.display = 'none';
+    a.setAttribute("href", src);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
 }
