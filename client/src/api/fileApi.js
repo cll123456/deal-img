@@ -1,5 +1,6 @@
 import request from "../../util/request";
 
+// es6 promise
 /**
  * 上传文件
  * @returns {Promise<AxiosResponse<any>>}

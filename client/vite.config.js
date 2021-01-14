@@ -34,7 +34,7 @@ export default function () {
         //然后配合 resolver 对 包含的包 的导入进行处理：使用编译后的包内容代替原来 lodash 的包的内容，
         //这样就解决了 vite 中不能使用 cjs 包的问题，这部分代码在  depOptimizer.ts 里。
         optimizeDeps: {
-            include: ["axios","element-plus","vue","vue-router"]
+            include: ["qrcanvas"]
         },
         cssPreprocessOptions: {
             scss: {

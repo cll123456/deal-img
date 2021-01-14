@@ -1,7 +1,7 @@
 <template>
   <div class="dlg-qrcode">
     <div class="dlg-qrcode--container dlg-width">
-      <h1>在线生成二维码</h1>
+      <h1>在线生成普通二维码</h1>
       <p>
         <el-row :gutter="30">
           <el-col :span="16">
