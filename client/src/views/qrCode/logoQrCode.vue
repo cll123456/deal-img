@@ -6,7 +6,7 @@
         <el-row :gutter="30">
           <el-col :span="16">
             <el-card shadow="always">
-              <el-tabs v-model="activeName">
+              <el-tabs v-model="activeName" @tab-click="changeTab">
                 <el-tab-pane label="基础选项" name="base">
                   <!-- 生成二维码的表单 -->
                   <el-form ref="logoQrcodeForm" label-width="120px">
@@ -134,7 +134,7 @@
                 <el-tab-pane label="形状选项" name="ship">
                   <el-form label-width="120px">
                     <el-form-item label="码点形状">
-                      <el-radio-group v-model="form.shape"  @change="changeQrcode">
+                      <el-radio-group v-model="form.shape" @change="changeQrcode">
                         <el-radio label="none">默认</el-radio>
                         <el-radio label="round">圆角</el-radio>
                         <el-radio label="fusion">熔化</el-radio>
@@ -161,8 +161,113 @@
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="logo添加文字" name="text">定时任务补偿</el-tab-pane>
-                <el-tab-pane label="logo添加图片" name="img">定时任务补偿</el-tab-pane>
+                <el-tab-pane label="logo添加文字" name="text">
+                  <el-form label-width="120px">
+                    <el-form-item label="logo文本内容">
+                      <el-input
+                          v-model="form.logoText"
+                          placeholder="请输入二维码中间要展示的文字"
+                          clearable
+                          @input="changeQrcode"
+                      ></el-input>
+                    </el-form-item>
+                    <el-form-item label="文本大小">
+                      <el-slider
+                          v-model="form.logoTextSize"
+                          :min="10"
+                          :max="100"
+                          @change="changeQrcode"
+                          show-input
+                      ></el-slider>
+                    </el-form-item>
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item label="文本字体">
+                          <el-select size="small"
+                                     v-model="form.logoTextFam"
+                                     @change="changeQrcode"
+                                     placeholder="请选择">
+                            <el-option
+                                v-for="item in fontFamilyOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="文本颜色">
+                          <el-color-picker
+                              v-model="form.logoTextColor"
+                              color-format="hex"
+                              @change="changeQrcode"
+                          ></el-color-picker>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-form-item label="注意文字样式">
+                      <el-input
+                          type="textarea"
+                          :rows="3"
+                          readonly
+                          resize="none"
+                          value="logo是文字和图片二选一的。二维码的容错率尽量使用最高，二维码的文本大小是根据二维码的排布进行自动规划，如果存在剩余空间，按设置的最大进行排放。">
+                      </el-input>
+                    </el-form-item>
+                  </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="logo添加图片" name="img">
+                  <el-form label-width="120px">
+                    <el-form-item label="上传logo">
+                      <el-button v-if="!!!imgSrc"
+                                 type="primary"
+                                 @click="sureUpload(`logoImg`)"
+                                 size="small">上传
+                        <i class="el-icon-upload el-icon--right"></i></el-button>
+                      <img v-show="!!imgSrc"
+                           id="logoImges"
+                           :src="imgSrc" alt="logo"
+                           :height="form.logoImgSize"
+                           :width="form.logoImgSize"
+                           :style="{
+                             display: 'inline-block',
+                              verticalAlign: 'middle',
+                              marginRight: '5px'
+                           }"
+                      >
+                      <el-button size="mini" type="danger" v-show="!!imgSrc" class="el-icon-circle-close deleteImg"
+                                 title="删除图片"
+                                 @click="deleteImg">
+                        删除图片
+                      </el-button>
+                      <file-upload
+                          :file-id="`logoImg`"
+                          @handFile="handleLogoFile"
+                          :file-type="`image/jpeg,image/jpg,image/png`"
+                          :is-multiple="false"
+                      />
+                    </el-form-item>
+                    <el-form-item label="图片大小">
+                      <el-slider
+                          v-model="form.logoImgSize"
+                          :min="30"
+                          :max="100"
+                          @change="changeQrcode"
+                          show-input
+                      ></el-slider>
+                    </el-form-item>
+                    <el-form-item label="注意上传">
+                      <el-input
+                          type="textarea"
+                          :rows="4"
+                          readonly
+                          resize="none"
+                          value="logo图片请上传png或者jpg的图片，后台会自动压缩图片的大小。logo是文字和图片二选一的。二维码的容错率尽量使用最高，二维码的图片大小是根据二维码的排布进行自动规划，如果存在剩余空间，按设置的最大进行排放。">
+                      </el-input>
+                    </el-form-item>
+                  </el-form>
+                </el-tab-pane>
               </el-tabs>
             </el-card>
           </el-col>
@@ -172,8 +277,8 @@
                 <div id="logoQrcode"></div>
               </div>
               <div class="btn dlg-center">
-                <el-button type="primary"> 下载二维码</el-button>
-                <el-button>
+                <el-button type="primary" @click="downloadLogoQrcode"> 下载二维码</el-button>
+                <el-button @click="resetLogoQrCode">
                   重置二维码
                 </el-button>
               </div>
@@ -187,13 +292,16 @@
 
 <script>
 import {ref, onMounted} from "vue";
-import {logoQrCodeBaseJson, levelOptions} from "./qrcodeConfig.js";
+import {logoQrCodeBaseJson, levelOptions, fontFamilyOptions} from "./qrcodeConfig.js";
 import {cloneValue} from "../../../util/objUtil.js";
-import {qrcanvas} from 'qrcanvas';
 import {generateQRCode} from "../composition/logoQrCode.js";
+import {downloadQrcode, imgStandard, sureUpload, uploadFileAndPress} from "../../../util/fileUtils.js";
+import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "logoQrCode",
+  components: {FileUpload},
   setup() {
     // 当前的选项
     const activeNameRef = ref('base');
@@ -215,13 +323,67 @@ export default {
       formRef.value.posInnerColor = posInnerColor;
       changeQrcode()
     }
-
+    // 重置数据
+    const resetLogoQrCode = () => {
+      formRef.value = cloneValue(logoQrCodeBaseJson);
+    };
+    // logo的
+    const imgSrcRef = ref('');
+    // 上传文件
+    const handleLogoFile = async (files) => {
+      if (!imgStandard(files)) return;
+      try {
+        const res = await uploadFileAndPress(files);
+        imgSrcRef.value = 'http://localhost:9011' + res.data.url.split('public')[1];
+        // 赋值logoimg
+        formRef.value.logoImg = document.getElementById('logoImges');
+        // 生成二维码
+        const timer = setTimeout(() => {
+          changeQrcode();
+          clearTimeout(timer);
+        }, 2000)
+      } catch (e) {
+      }
+    }
+    // 改变tab
+    const changeTab = (e) => {
+      if (activeNameRef.value === 'text') {
+        ElMessage.warning({
+          message: '二维码logo的图片将会被清空！',
+          type: 'warning'
+        });
+        formRef.value.logoImg = '';
+        imgSrcRef.value = null;
+        formRef.value.logoText = 'QRCODE';
+      } else if (activeNameRef.value === 'img') {
+        ElMessage.warning({
+          message: '二维码logo的文字将会被清空！',
+          type: 'warning'
+        });
+        formRef.value.logoText = '';
+      }
+      changeQrcode();
+    }
+    // 删除图片
+    const deleteImg = () => {
+      formRef.value.logoImg = '';
+      imgSrcRef.value = null;
+      changeQrcode()
+    }
     return {
       activeName: activeNameRef,
       form: formRef,
       levelOptions,
+      fontFamilyOptions,
       changeQrcode,
-      chooseColor
+      chooseColor,
+      downloadLogoQrcode: () => downloadQrcode('.logoQrcode-container'),
+      sureUpload: (id) => sureUpload(id),
+      resetLogoQrCode,
+      imgSrc: imgSrcRef,
+      handleLogoFile,
+      changeTab,
+      deleteImg,
     }
   }
 }
@@ -256,6 +418,10 @@ export default {
           height: 272px;
         }
       }
+    }
+
+    .deleteImg {
+
     }
   }
 }

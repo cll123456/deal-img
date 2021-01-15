@@ -9,7 +9,7 @@
         <file-upload
             :file-id="`pressImg`"
             @handFile="pressFileUpload"
-            :file-type="`image/jpeg,image/jpg,image/png,image/svg`"
+            :file-type="`image/jpeg,image/jpg,image/png`"
             :is-multiple="false"/>
       </p>
     </div>
@@ -56,7 +56,7 @@ import {useRouter} from 'vue-router';
 import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
 import MyProcess from "../../components/busCom/myProcess/myProcess.vue";
 import {imgPress} from "../composition/imgPress.js";
-import {imgStandard} from "../../../util/fileUtils.js";
+import {imgStandard, sureUpload} from "../../../util/fileUtils.js";
 
 
 export default {
@@ -68,10 +68,6 @@ export default {
     const hasChooseFileLoadingRef = ref(false);
     // 导出文件图片上传列表，里面维护一个一个的图片对象
     const imgListRef = ref([]);
-    // 点击选择文件
-    const sureUpload = (id) => {
-      document.querySelector(`#${id}`).click();
-    }
     // 文件上传的业务逻辑
     const fileUpload = async (files) => {
       if (!imgStandard(files)) return;
@@ -84,7 +80,7 @@ export default {
     }
 
     return {
-      sureUpload,
+      sureUpload: (id) => sureUpload(id),
       pressFileUpload: fileUpload,
       hasChooseFileLoading: hasChooseFileLoadingRef,
       imgList: imgListRef,

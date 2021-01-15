@@ -9,7 +9,7 @@ const {defaultLogger} = require('./../config/logger')
 // 使用vue页面导航中间件，必须要放在前面
 const history = require('connect-history-api-fallback');
 app.use(history({
-    index: '/index.html',
+    index: path.resolve(__dirname, './../public/html/index.html'),
     htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'], // 不加这一行，后面有的请求会被拦截
     rewrites: [ // 匹配到api开头的，继续向下传递
         {
@@ -22,7 +22,7 @@ app.use(history({
 }));
 
 // 使用静态资源的中间件
-app.use(express.static(path.resolve(__dirname, './public/html')));
+app.use(express.static(path.resolve(__dirname, './../public')));
 
 // 使用cors 跨域中间件
 const cors = require('cors');

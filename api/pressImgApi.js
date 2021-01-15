@@ -35,6 +35,7 @@ router.get('/', async (req, res, next) => {
             // 需要读取文件
             const pressFilePath = files[0].destinationPath;
             const fileStats = await fs.promises.stat(pressFilePath)
+            console.log(fileStats,files,'----')
             const obj = successMsg('压缩成功', {
                 url: pressFilePath,
                 size: fileStats.size,

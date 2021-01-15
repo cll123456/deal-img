@@ -3,7 +3,7 @@
  * @type {{margin: number, size: number, mainColor: string, text: string, subColor: string}}
  */
 export const qrcodeJson = {
-    text: "",
+    text: "https://www.baidu.com",
     margin: 2,
     size: 180,
     mainColor: "#000",
@@ -16,7 +16,7 @@ export const qrcodeJson = {
  * @type {{margin: number, size: number, level: string, text: string}}
  */
 export const logoQrCodeBaseJson = {
-    text: "", // 文本
+    text: "https://www.baidu.com", // 文本
     margin: 5, // 边距
     size: 180, // 大小
     level: "M", // 容错等级
@@ -26,6 +26,12 @@ export const logoQrCodeBaseJson = {
     posInnerColor: '#621',// 定位器内部颜色
     shape: 'round', // 二维码的形状
     shapePercent: 50, // 二维码的形状的百分比
+    logoText: 'QRCODE', // 默认二维码内部的文字
+    logoTextColor: '#c33', // 默认二维码内部的文字的颜色
+    logoTextSize: 12, // 默认二维码内部的文字的大小
+    logoTextFam: 'KaiTi_GB2312', // 默认二维码内部的文字的样式
+    logoImgSize: 20, // logo图标的大小
+    logoImg: '', // logo图标的dom
 }
 /**
  * 二维码的容错等级
@@ -44,3 +50,17 @@ export const levelOptions = [{
     value: 'H',
     label: '高（可遮30%）'
 }]
+
+/**
+ * 二维码文字的的样式
+ * @type {({label: string, value: string}|{label: string, value: string}|{label: string, value: string}|{label: string, value: string}|{label: string, value: string})[]}
+ */
+export const fontFamilyOptions = [
+    {value: '宋体', label: '宋体'},
+    {value: '隶书', label: '隶书'},
+    {value: '黑体', label: '黑体'},
+    {value: 'KaiTi_GB2312', label: 'KaiTi_GB2312'},
+    {value: '微软雅黑', label: '微软雅黑'},
+    {value: '华文彩云', label: '华文彩云'},
+    {value: '方正舒体', label: '方正舒体'},
+    {value: '幼圆', label: '幼圆'},]

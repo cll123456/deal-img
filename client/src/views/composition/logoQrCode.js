@@ -14,14 +14,36 @@ export function generateQRCode(qrDataRef, id = 'logoQrcode') {
     // 组装二维码的形状
     const effect = qrDataRef.type === 'none' ? {} : {
         type: qrDataRef.value.shape, // 形状的类型
-        value:qrDataRef.value.shapePercent / 100, // 二维码的形状的百分比 / 100 是需要 0 - 1
+        value: qrDataRef.value.shapePercent / 100, // 二维码的形状的百分比 / 100 是需要 0 - 1
     }
+    // 组装二维码的logo
+    let logo;
+    if (qrDataRef.value.logoText.length > 0) {
+        // 加载文字
+        logo = {
+            text: qrDataRef.value.logoText,
+            options: {
+                fontSize: qrDataRef.value.logoTextSize,
+                color: qrDataRef.value.logoTextColor,
+                pad: 5,
+                fontFamily: qrDataRef.value.logoTextFam,
+            }
+        }
+    }
+    if (typeof qrDataRef.value.logoImg === 'object') {
+        // 加载图片
+        logo = {
+            image: qrDataRef.value.logoImg
+        }
+    }
+
     const canvas = qrcanvas({
         data: qrDataRef.value.text, // 二维码的数据
         correctLevel: qrDataRef.value.level, // 容错等级
         size: qrDataRef.value.size, // 二维码的大小
         padding: qrDataRef.value.margin, // 二维码的间距
         effect,
+        logo,
         foreground: [
             // foreground color
             {style: colorFore},

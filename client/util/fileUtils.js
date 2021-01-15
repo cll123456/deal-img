@@ -1,4 +1,5 @@
 import {ElMessage} from "element-plus";
+import {pressImg, uploadFile} from "../src/api/fileApi.js";
 
 /**
  * 转换文件的大小
@@ -68,4 +69,41 @@ export function downloadImgByLinkA(src, imgName = 'qrcode') {
     document.body.appendChild(a);
     a.click();
     a.remove();
+}
+
+/**
+ * 下载二维码
+ * @param className
+ * @param downloadName
+ */
+export function downloadQrcode(className, downloadName = '二维码图片' ){
+    console.log(className);
+    const caDom = document.querySelector(className).querySelector('canvas')
+    const imgSrc = caDom.toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    downloadImgByLinkA(imgSrc, downloadName);
+}
+
+
+/**
+ * 上传并且压缩文件的公共方法
+ * @param files 文件对象
+ * @returns {Promise<AxiosResponse<*>>}
+ */
+export async function uploadFileAndPress(files) {
+    const formData = new FormData();
+    formData.append('img', files.files[0]);
+    // 上传文件
+    const fileRe = await uploadFile(formData);
+    const updUrl = fileRe.data.url;
+    // 压缩文件,获取文件路径，文件大小
+    return await pressImg(updUrl);
+}
+
+/**
+ * 确定上传文件
+ * @param id
+ */
+export function sureUpload (id)  {
+    document.querySelector(`#${id}`).click();
 }

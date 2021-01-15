@@ -1,5 +1,4 @@
-import {transformFileSize} from "../../../util/fileUtils.js";
-import {pressImg, uploadFile} from "../../api/fileApi.js";
+import {transformFileSize, uploadFileAndPress} from "../../../util/fileUtils.js";
 
 /**
  * 压缩图片的公共方法
@@ -9,8 +8,6 @@ import {pressImg, uploadFile} from "../../api/fileApi.js";
  * @returns {Promise<void>}
  */
 export async function imgPress(files, hasChooseFileLoadingRef, imgListRef) {
-    const formData = new FormData();
-    formData.append('img', files.files[0]);
     // 列表显示的文件对象
     let obj = {
         fileName: files.files[0].name, // 文件名称
@@ -26,12 +23,9 @@ export async function imgPress(files, hasChooseFileLoadingRef, imgListRef) {
         reduce: '', // 文件压缩后的大小
         hasShowDownload: false, // 是否显示下载按钮
     }
-    // 上传文件
-    const fileRe = await uploadFile(formData);
     imgListRef.value.push(obj)
-    const updUrl = fileRe.data.url;
-    // 压缩文件,获取文件路径，文件大小
-    const pressRe = await pressImg(updUrl);
+    // 压缩文件
+    const pressRe = await uploadFileAndPress(files);
     obj.bgColor = '#67C23A';
     obj.processTxt = '完成';
     obj.hasShowDownload = true;
@@ -41,4 +35,5 @@ export async function imgPress(files, hasChooseFileLoadingRef, imgListRef) {
     obj.reduce = -(((obj.fileOriSizeB - pressRe.data.size) / obj.fileOriSizeB) * 100).toFixed(2) + '%'
     hasChooseFileLoadingRef.value = false;
 }
+
 

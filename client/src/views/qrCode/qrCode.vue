@@ -78,7 +78,7 @@ import {ref} from "vue";
 import QrcodeVue from "qrcode.vue";
 import {qrcodeJson} from "./qrcodeConfig.js";
 import {cloneValue} from "../../../util/objUtil.js";
-import {downloadImgByLinkA} from "../../../util/fileUtils.js";
+import {downloadQrcode} from "../../../util/fileUtils.js";
 
 export default {
   name: "qrCode",
@@ -93,18 +93,10 @@ export default {
     const resetQrCode = () => {
       formRef.value = cloneValue(qrcodeJson);
     };
-    // 下载二维码
-    const downloadQrcode = () => {
-      const caDom = document.querySelector('.qrcode-container').querySelector('canvas')
-      const imgSrc = caDom.toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
-      downloadImgByLinkA(imgSrc, '二维码图片');
-
-    }
     return {
       form: formRef,
       resetQrCode,
-      downloadQrcode
+      downloadQrcode: () => downloadQrcode('.qrcode-container')
     };
   },
 };
