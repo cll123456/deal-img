@@ -25,15 +25,22 @@ export async function imgPress(files, hasChooseFileLoadingRef, imgListRef) {
     }
     imgListRef.value.push(obj)
     // 压缩文件
-    const pressRe = await uploadFileAndPress(files);
-    obj.bgColor = '#67C23A';
-    obj.processTxt = '完成';
-    obj.hasShowDownload = true;
-    obj.hasStriped = false;
-    obj.pressFileSize = transformFileSize(+pressRe.data.size);
-    obj.url = pressRe.data.url;
-    obj.reduce = -(((obj.fileOriSizeB - pressRe.data.size) / obj.fileOriSizeB) * 100).toFixed(2) + '%'
-    hasChooseFileLoadingRef.value = false;
+    try {
+        const pressRe = await uploadFileAndPress(files);
+        obj.bgColor = '#67C23A';
+        obj.processTxt = '完成';
+        obj.hasShowDownload = true;
+        obj.hasStriped = false;
+        obj.pressFileSize = transformFileSize(+pressRe.data.size);
+        obj.url = pressRe.data.url;
+        obj.reduce = -(((obj.fileOriSizeB - pressRe.data.size) / obj.fileOriSizeB) * 100).toFixed(2) + '%'
+        hasChooseFileLoadingRef.value = false;
+    } catch (e) {
+        console.log('图片压缩失败');
+        imgListRef.value.splice(imgListRef.value.indexOf(obj), 1)
+    }
+
+
 }
 
 

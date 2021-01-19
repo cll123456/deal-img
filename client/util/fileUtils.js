@@ -1,5 +1,6 @@
-import {ElMessage} from "element-plus";
 import {pressImg, uploadFile} from "../src/api/fileApi.js";
+import {tip} from "./messageUtils.js";
+import {proxyConfig} from "../urlConfig.js";
 
 /**
  * 转换文件的大小
@@ -38,18 +39,12 @@ export function imgStandard(files) {
     let fileType = files.files[0].type.split('/')[1]
     // 判断图片的类型
     if (!types.includes(fileType)) {
-        ElMessage.warning({
-            message: '请上传图片后缀名为jpg,jpeg或者是png的图片！',
-            type: 'warning'
-        });
+        tip('warning','请上传图片后缀名为jpg,jpeg或者是png的图片！');
         return false;
     }
     // 图片大小在100MB以内
     if (files.files[0].size / 1024 / 1024 > 100) {
-        ElMessage.warning({
-            message: '图片大小在100MB以内！',
-            type: 'warning'
-        });
+        tip('warning','图片大小在100MB以内！');
         return false;
     }
 
@@ -106,4 +101,13 @@ export async function uploadFileAndPress(files) {
  */
 export function sureUpload (id)  {
     document.querySelector(`#${id}`).click();
+}
+
+/**
+ * 获取图片的绝对路径
+ * @param res 压缩图片后的地址
+ * @returns {string}
+ */
+export function getImgUrl(res){
+  return   proxyConfig +  res.data.url.split('public')[1];
 }

@@ -5,10 +5,11 @@ $wid: 宽度
 $bgc： 背景颜色
  */
 @mixin exclude-header-style($hpx: 60px, $wid: 100%, $bgc:#f9f6f680) {
-  background-color:  $bgc;
+  background-color: $bgc;
   background-image: linear-gradient(to bottom, $bgc, #fff);
   width: $wid;
   height: calc(100vh - #{$hpx});
+  overflow: auto;
 }
 
 /**
@@ -27,7 +28,7 @@ $ht: 高度
 /**
 图片标题的大小
  */
-@mixin img-title-style($fs: 22px){
+@mixin img-title-style($fs: 22px) {
   font-size: $fs;
   padding-bottom: 50px;
 }

@@ -1,10 +1,13 @@
+
 const path = require('path')
+import {proxyConfig} from "./urlConfig.js";
+
 export default function () {
     return {
         // 代理，最重要，其他的都可以有默认配置
         proxy: {
             '/api': {
-                target: 'http://localhost:9011',
+                target: proxyConfig,
                 changeOrigin: true,
             }
         },

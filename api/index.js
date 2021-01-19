@@ -22,7 +22,13 @@ app.use(history({
 }));
 
 // 使用静态资源的中间件
-app.use(express.static(path.resolve(__dirname, './../public')));
+app.use(express.static(path.resolve(__dirname, './../public'),{
+    maxAge: '1d',
+    setHeaders: function (res, path, stat) {
+        res.set("Access-Control-Allow-Origin","*")
+    },
+    redirect: path.resolve(__dirname, './../public/html/index.html')
+}));
 
 // 使用cors 跨域中间件
 const cors = require('cors');

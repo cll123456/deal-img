@@ -36,4 +36,5 @@ export default {
     flex-grow: 1;
   }
 }
+
 </style>

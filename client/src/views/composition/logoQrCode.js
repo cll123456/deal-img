@@ -63,5 +63,4 @@ export function generateQRCode(qrDataRef, id = 'logoQrcode') {
     const parQRcDom = document.getElementById(id);
     parQRcDom.innerHTML = '';
     parQRcDom.appendChild(canvas);
-
 }

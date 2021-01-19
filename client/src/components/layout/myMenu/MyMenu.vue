@@ -13,6 +13,10 @@
       <el-menu-item index="qrcode">普通二维码</el-menu-item>
       <el-menu-item index="logoQrCode">带logo二维码</el-menu-item>
     </el-submenu>
+    <el-submenu index="home">
+      <template #title>更多</template>
+      <el-menu-item index="">敬请期待</el-menu-item>
+    </el-submenu>
   </el-menu>
 </template>
 

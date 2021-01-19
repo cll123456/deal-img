@@ -263,7 +263,7 @@
                           :rows="4"
                           readonly
                           resize="none"
-                          value="logo图片请上传png或者jpg的图片，后台会自动压缩图片的大小。logo是文字和图片二选一的。二维码的容错率尽量使用最高，二维码的图片大小是根据二维码的排布进行自动规划，如果存在剩余空间，按设置的最大进行排放。">
+                          value="logo图片请上传png或者jpg的图片，后台会自动压缩图片的大小。logo是文字和图片二选一的。二维码的容错率尽量使用最高，二维码的图片大小是根据二维码的排布进行自动规划，如果存在剩余空间，按设置的最大进行排放。生成后请尽快下载，后台30min内会自动删除图片。">
                       </el-input>
                     </el-form-item>
                   </el-form>
@@ -295,9 +295,9 @@ import {ref, onMounted} from "vue";
 import {logoQrCodeBaseJson, levelOptions, fontFamilyOptions} from "./qrcodeConfig.js";
 import {cloneValue} from "../../../util/objUtil.js";
 import {generateQRCode} from "../composition/logoQrCode.js";
-import {downloadQrcode, imgStandard, sureUpload, uploadFileAndPress} from "../../../util/fileUtils.js";
+import {downloadQrcode, getImgUrl, imgStandard, sureUpload, uploadFileAndPress} from "../../../util/fileUtils.js";
 import FileUpload from "../../components/busCom/fileUpload/FileUpload.vue";
-import {ElMessage} from "element-plus";
+import {tip} from "../../../util/messageUtils.js";
 
 export default {
   name: "logoQrCode",
@@ -326,6 +326,7 @@ export default {
     // 重置数据
     const resetLogoQrCode = () => {
       formRef.value = cloneValue(logoQrCodeBaseJson);
+      changeQrcode();
     };
     // logo的
     const imgSrcRef = ref('');
@@ -334,7 +335,7 @@ export default {
       if (!imgStandard(files)) return;
       try {
         const res = await uploadFileAndPress(files);
-        imgSrcRef.value = 'http://localhost:9011' + res.data.url.split('public')[1];
+        imgSrcRef.value = getImgUrl(res);
         // 赋值logoimg
         formRef.value.logoImg = document.getElementById('logoImges');
         // 生成二维码
@@ -348,18 +349,12 @@ export default {
     // 改变tab
     const changeTab = (e) => {
       if (activeNameRef.value === 'text') {
-        ElMessage.warning({
-          message: '二维码logo的图片将会被清空！',
-          type: 'warning'
-        });
+        tip('warning','二维码logo的图片将会被清空！');
         formRef.value.logoImg = '';
         imgSrcRef.value = null;
         formRef.value.logoText = 'QRCODE';
       } else if (activeNameRef.value === 'img') {
-        ElMessage.warning({
-          message: '二维码logo的文字将会被清空！',
-          type: 'warning'
-        });
+        tip('warning','二维码logo的文字将会被清空!');
         formRef.value.logoText = '';
       }
       changeQrcode();

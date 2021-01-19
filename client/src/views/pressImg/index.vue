@@ -14,7 +14,7 @@
       </p>
     </div>
     <div class="dlg-pressImg--remark">
-      <p>备注1：请上传jpg,jpeg,或者png的图片，图片大小在100MB</p>
+      <p>备注1：请上传jpg,jpeg,或者png的图片，图片大小在100MB之内</p>
       <p>备注2：压缩完后请尽快下载，30min后图片自动删除.&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
 

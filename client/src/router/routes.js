@@ -10,10 +10,6 @@ export const routes = [
         path: '/home',
         component: () => import('../views/waterImg/home.vue')
     }, {
-        name: 'detail',
-        path: '/detail',
-        component: getAsyncComponent('../src/views/waterImg/detail.vue')
-    }, {
         name: 'pressImg',
         path: '/pressImg',
         component: getAsyncComponent('../src/views/pressImg/index.vue')
