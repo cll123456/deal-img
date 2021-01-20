@@ -39,12 +39,12 @@ export function imgStandard(files) {
     let fileType = files.files[0].type.split('/')[1]
     // 判断图片的类型
     if (!types.includes(fileType)) {
-        tip('warning','请上传图片后缀名为jpg,jpeg或者是png的图片！');
+        tip('warning', '请上传图片后缀名为jpg,jpeg或者是png的图片！');
         return false;
     }
     // 图片大小在100MB以内
     if (files.files[0].size / 1024 / 1024 > 100) {
-        tip('warning','图片大小在100MB以内！');
+        tip('warning', '图片大小在100MB以内！');
         return false;
     }
 
@@ -71,7 +71,7 @@ export function downloadImgByLinkA(src, imgName = 'qrcode') {
  * @param className
  * @param downloadName
  */
-export function downloadQrcode(className, downloadName = '二维码图片' ){
+export function downloadQrcode(className, downloadName = '二维码图片') {
     console.log(className);
     const caDom = document.querySelector(className).querySelector('canvas')
     const imgSrc = caDom.toDataURL("image/png")
@@ -99,7 +99,7 @@ export async function uploadFileAndPress(files) {
  * 确定上传文件
  * @param id
  */
-export function sureUpload (id)  {
+export function sureUpload(id) {
     document.querySelector(`#${id}`).click();
 }
 
@@ -108,6 +108,7 @@ export function sureUpload (id)  {
  * @param res 压缩图片后的地址
  * @returns {string}
  */
-export function getImgUrl(res){
-  return   proxyConfig +  res.data.url.split('public')[1];
+export function getImgUrl(res) {
+    let pre = import.meta.env.DEV ? proxyConfig : '.';
+    return pre + res.data.url.split('public')[1];
 }

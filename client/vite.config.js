@@ -1,7 +1,6 @@
 
 const path = require('path')
 import {proxyConfig} from "./urlConfig.js";
-
 export default function () {
     return {
         // 代理，最重要，其他的都可以有默认配置
@@ -16,7 +15,7 @@ export default function () {
         // 出口
         outDir: './../public/html',
         // 打包后的跟路径
-        base: '/',
+        base: '/html/',
         // 输出的静态资源的文件夹名称
         assetsDir: 'assets',
         // 是否开启ssr服务断渲染
